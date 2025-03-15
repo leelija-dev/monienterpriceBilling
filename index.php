@@ -10,7 +10,7 @@
     <div class="collapse navbar-collapse">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item">
-          <a class="nav-link" href="customer.php">Customer</a>
+          <a class="nav-link" href="fetch_customer.php">Customer</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="billingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
