@@ -1,17 +1,11 @@
 <?php
-// billing_details.php
-
-// Database credentials - adjust these to your settings
-$host = "localhost";
-$dbname = "trueacc_billing";
-$user = "root";
-$pass = "";
-
-// Create connection using mysqli
-$conn = new mysqli($host, $user, $pass, $dbname);
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+session_start();
+if (!isset($_SESSION['customer_id'])) {
+    header("Location: login.php");
+    exit();
 }
+
+include 'db.php'; 
 
 // Query to retrieve billing details along with customer information
 $query = "
@@ -35,10 +29,42 @@ $result = $conn->query($query);
 <html>
 <head>
   <title>Billing Details</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">  
+  <!-- <link rel="stylesheet" href="sidebar/sidebar.css"> -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    /* Your sidebar and content styles here */
+    body {
+      display: flex;
+      margin: 0;
+      height: 100vh;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #f8f9fa;
+      padding: 15px;
+      border-right: 1px solid #ddd;
+    }
+    .content {
+      flex-grow: 1;
+      padding: 20px;
+    }
+  </style>
 </head>
 <body>
-<div class="container mt-4">
+<div class="d-flex w-100">
+<?php include 'sidebar/sidebar.php'; ?>
+<div class=" w-100">
+<nav class="navbar navbar-light bg-light w-100">
+<div class="container-fluid">
+          <span class="navbar-text fw-bold">
+            Welcome, <?php echo $_SESSION['customer_name']; ?>
+          </span>
+          <a class="btn btn-outline-danger" href="logout.php">Logout</a>
+        </div>
+</nav>
+<div class="content mt-4">
   <h2>Billing Details</h2>
   <?php if($result && $result->num_rows > 0): ?>
     <table class="table table-bordered table-striped">
@@ -71,6 +97,9 @@ $result = $conn->query($query);
     <p>No billing details found.</p>
   <?php endif; ?>
 </div>
+</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
 

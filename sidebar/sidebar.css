@@ -1,0 +1,18 @@
+.sidebar {
+    width: 200px;
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-right: 1px solid #ddd;
+    height: 100vh;
+  }
+  .sidebar h4 {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+  .sidebar .nav-link {
+    color: #333;
+    padding: 5px 0;
+  }
+  .sidebar .nav-link:hover {
+    color: #007bff;
+  }
