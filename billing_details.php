@@ -66,6 +66,7 @@ $result = $conn->query($query);
 </nav>
 <div class="content mt-4">
   <h2>Billing Details</h2>
+  <hr>
   <?php if($result && $result->num_rows > 0): ?>
     <table class="table table-bordered table-striped">
       <thead>
@@ -94,7 +95,7 @@ $result = $conn->query($query);
       </tbody>
     </table>
   <?php else: ?>
-    <p>No billing details found.</p>
+    <div class="d-flex justify-content-center mt-5"><p class="m-0 h4 text-danger">No billing details found.</p></div>
   <?php endif; ?>
 </div>
 </div>
