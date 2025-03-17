@@ -1,9 +1,10 @@
 <?php
   session_start();
-  if (!isset($_SESSION['customer_id'])) {
+  if (!isset($_SESSION['admin_id'])) {
       header("Location: login.php");
       exit();
   }
+  $admin_id = $_SESSION['admin_id'];
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,7 +39,7 @@
 <nav class="navbar navbar-light bg-light w-100" >
 <div class="container-fluid">
           <span class="navbar-text fw-bold">
-            Welcome, <?php echo $_SESSION['customer_name']; ?>
+            Welcome, <?php echo $_SESSION['admin_name']; ?>
           </span>
           <a class="btn btn-outline-danger" href="logout.php">Logout</a>
         </div>
@@ -50,7 +51,7 @@
         <?php
         include 'db.php'; 
 
-        $sql = "SELECT * FROM customers ORDER BY cust_id";
+        $sql = "SELECT * FROM customers WHERE admin_id= $admin_id ORDER BY cust_id";
         $result = $conn->query($sql);
 
         if ($result && $result->num_rows > 0) {
@@ -61,8 +62,8 @@
                     <th>ID</th>
                     <th>Customer Name</th>
                     <th>Phone Number</th>
-                    <!-- <th>Email</th>
-                    <th>Address</th>
+                     <th>Email</th>
+                    <!--<th>Address</th>
                     <th>City</th>
                     <th>State</th>
                     <th>Pincode</th> -->
@@ -74,7 +75,7 @@
                 echo "<td>" . htmlspecialchars($row['cust_id']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['cust_name']) . "</td>";
                 echo "<td>" . htmlspecialchars($row['cust_phone']) . "</td>";
-                // echo "<td>" . htmlspecialchars($row['cust_email']) . "</td>";
+                echo "<td>" . htmlspecialchars($row['cust_email']) . "</td>";
                 // echo "<td>" . htmlspecialchars($row['cust_address']) . "</td>";
                 // echo "<td>" . htmlspecialchars($row['cust_city']) . "</td>";
                 // echo "<td>" . htmlspecialchars($row['cust_state']) . "</td>";

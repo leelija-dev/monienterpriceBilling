@@ -2,7 +2,7 @@
 session_start();
 
 // If user is already logged in, redirect to index.php
-if (isset($_SESSION['customer_id'])) {
+if (isset($_SESSION['admin_id'])) {
     header("Location: index.php");
     exit();
 }
@@ -13,16 +13,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $conn->real_escape_string($_POST['email']);
     $password = $_POST['password'];
 
-    $sql = "SELECT * FROM customers WHERE cust_email='$email'";
+    $sql = "SELECT * FROM admin WHERE email='$email'";
     $result = $conn->query($sql);
 
     if ($result && $result->num_rows == 1) {
         $user = $result->fetch_assoc();
         // if (password_verify($password, $user['cust_password'])) {
-            if ($password == $user['cust_password']) {
+            if ($password == $user['admin_password']) {
             // Set session variables
-            $_SESSION['customer_id'] = $user['cust_id'];
-            $_SESSION['customer_name'] = $user['cust_name'];
+            $_SESSION['admin_id'] = $user['admin_id'];
+            $_SESSION['admin_name'] = $user['admin_name'];
             header("Location: index.php");
             exit();
         } else {

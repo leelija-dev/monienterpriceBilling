@@ -1,11 +1,20 @@
 <?php
 session_start();
-if (!isset($_SESSION['customer_id'])) {
+if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");
     exit();
 }
 
 include 'db.php'; 
+
+//fetch admin details 
+$admin_id = $_SESSION['admin_id'];
+$sql = "SELECT * FROM admin WHERE admin_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $admin_id);
+$stmt->execute();
+$admin_info = $stmt->get_result()->fetch_assoc();
+$stmt->close();
 
 // Fetch all customers for the autocomplete dropdown
 $customerQuery = "SELECT cust_id, cust_name, cust_phone FROM customers ORDER BY cust_name";
@@ -22,7 +31,7 @@ if(isset($_GET['billing_id'])){
     $billing_id = $_GET['billing_id'];
     
     // Fetch billing info (including customer details, now including customer id)
-    $sql = "SELECT b.billing_date, c.cust_id, c.cust_name, c.cust_phone FROM billing b 
+    $sql = "SELECT b.billing_date, b.billing_id, c.cust_id, c.cust_name, c.cust_phone FROM billing b 
             JOIN customers c ON b.cust_id = c.cust_id 
             WHERE b.billing_id = ?";
     $stmt = $conn->prepare($sql);
@@ -113,13 +122,14 @@ if(isset($_GET['billing_id'])){
       body * {
         visibility: hidden;
       }
-      .printInvoice .printInvoice * {
+      #invoiceModal #invoiceModal * {
         visibility: visible;
       }
-      .printInvoice {
+      #invoiceModal {
         position: absolute;
         left: 0;
         top: 0;
+        box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
         width: 100%;
       }
     }
@@ -136,7 +146,7 @@ if(isset($_GET['billing_id'])){
     <nav class="navbar navbar-light bg-light w-100">
       <div class="container-fluid">
         <span class="navbar-text fw-bold">
-          Welcome, <?php echo $_SESSION['customer_name']; ?>
+          Welcome, <?php echo $_SESSION['admin_name']; ?>
         </span>
         <a class="btn btn-outline-danger" href="logout.php">Logout</a>
       </div>
@@ -224,16 +234,15 @@ if(isset($_GET['billing_id'])){
         <!-- Close button now redirects to billing.php -->
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.href='billing.php'"></button>
       </div>
-      <div class="modal-body shadow printInvoice m-3 p-4">
+      <div class="modal-body shadow m-3 p-4" id="invoiceModal">
         <div class="row mb-3">
           <!-- Company Details -->
           <div class="col-md-6">
             <h6>Company Details</h6>
             <p>
-              <strong>My Company</strong><br>
-              123 Business Rd,<br>
-              City, Country<br>
-              Phone: 123-456-7890
+              <strong><?php echo $admin_info['admin_name']; ?></strong><br>
+              <?php echo $admin_info['email']; ?><br>
+              Phone: <?php echo $admin_info['phone_no']; ?>
             </p>
           </div>
           <!-- Customer Details (including customer id) -->
@@ -241,7 +250,7 @@ if(isset($_GET['billing_id'])){
             <h6>Customer Details</h6>
             <p>
               <strong><?php echo $billing_info['cust_name']; ?></strong><br>
-              Customer ID: <?php echo $billing_info['cust_id']; ?><br>
+              Billing ID: <?php echo $billing_id; ?><br>
               Phone: <?php echo $billing_info['cust_phone']; ?><br>
               Date: <?php echo $billing_info['billing_date']; ?>
             </p>

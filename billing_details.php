@@ -1,9 +1,10 @@
 <?php
 session_start();
-if (!isset($_SESSION['customer_id'])) {
+if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");
     exit();
 }
+$admin_id = $_SESSION['admin_id'];
 
 include 'db.php'; 
 
@@ -19,7 +20,7 @@ $query = "
     bd.unit_price
   FROM billing b
   JOIN customers c ON b.cust_id = c.cust_id
-  JOIN billing_details bd ON b.billing_id = bd.billing_id
+  JOIN billing_details bd ON b.billing_id = bd.billing_id WHERE b.admin_id = $admin_id
   ORDER BY b.billing_date DESC
 ";
 $result = $conn->query($query);
@@ -59,7 +60,7 @@ $result = $conn->query($query);
 <nav class="navbar navbar-light bg-light w-100">
 <div class="container-fluid">
           <span class="navbar-text fw-bold">
-            Welcome, <?php echo $_SESSION['customer_name']; ?>
+            Welcome, <?php echo $_SESSION['admin_name']; ?>
           </span>
           <a class="btn btn-outline-danger" href="logout.php">Logout</a>
         </div>

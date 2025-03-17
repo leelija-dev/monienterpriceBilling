@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['customer_id'])) {
+if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");
     exit();
 }
@@ -38,7 +38,7 @@ if (!isset($_SESSION['customer_id'])) {
       <nav class="navbar navbar-light bg-light w-100">
         <div class="container-fluid">
           <span class="navbar-text fw-bold">
-            Welcome, <?php echo $_SESSION['customer_name']; ?>
+            Welcome, <?php echo $_SESSION['admin_name']; ?>
           </span>
           <a class="btn btn-outline-danger" href="logout.php">Logout</a>
         </div>

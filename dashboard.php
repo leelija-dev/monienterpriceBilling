@@ -9,7 +9,7 @@ include 'db.php';
 
 $customer_id = $_SESSION['customer_id'];
 
-$sql = "SELECT * FROM customers WHERE cust_id = $customer_id";
+$sql = "SELECT * FROM admin WHERE cust_id = $customer_id";
 $result = $conn->query($sql);
 $customer = $result->fetch_assoc();
 ?>

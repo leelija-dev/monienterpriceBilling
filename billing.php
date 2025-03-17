@@ -1,16 +1,17 @@
 <?php
 session_start();
-if (!isset($_SESSION['customer_id'])) {
+if (!isset($_SESSION['admin_id'])) {
     header("Location: login.php");
     exit();
 }
+$admin_id = $_SESSION['admin_id'];
 
 include 'db.php';
 
 // Fetch billing records with associated customer details
 $sql = "SELECT b.billing_id, b.total_quentity, b.billing_amount, b.billing_date, c.cust_name, c.cust_phone 
         FROM billing b 
-        LEFT JOIN customers c ON b.cust_id = c.cust_id 
+        LEFT JOIN customers c ON b.cust_id = c.cust_id WHERE b.admin_id = $admin_id
         ORDER BY b.billing_date DESC";
 $result = $conn->query($sql);
 ?>
@@ -52,7 +53,7 @@ $result = $conn->query($sql);
     <nav class="navbar navbar-light bg-light w-100">
       <div class="container-fluid">
         <span class="navbar-text fw-bold">
-          Welcome, <?php echo $_SESSION['customer_name']; ?>
+          Welcome, <?php echo $_SESSION['admin_name']; ?>
         </span>
         <a class="btn btn-outline-danger" href="logout.php">Logout</a>
       </div>

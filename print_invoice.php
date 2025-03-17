@@ -1,4 +1,11 @@
 <?php
+
+session_start();
+if (!isset($_SESSION['admin_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
 include 'db.php';
 
 if(!isset($_GET['billing_id'])){
@@ -6,6 +13,17 @@ if(!isset($_GET['billing_id'])){
 }
 
 $billing_id = $_GET['billing_id'];
+
+
+//fetch admin details 
+$admin_id = $_SESSION['admin_id'];
+$sql = "SELECT * FROM admin WHERE admin_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $admin_id);
+$stmt->execute();
+$admin_info = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
 
 // Fetch billing info (including customer details)
 $sql = "SELECT b.billing_date, b.billing_amount, c.cust_id, c.cust_name, c.cust_phone 
@@ -77,17 +95,16 @@ $sgst = $totalGST / 2;
       <div class="col-md-6">
          <h4>Company Details</h4>
          <p>
-            <strong>My Company</strong><br>
-            123 Business Rd,<br>
-            City, Country<br>
-            Phone: 123-456-7890
+            <strong><?php echo $admin_info['admin_name']; ?></strong><br>
+              <?php echo $admin_info['email']; ?><br>
+              Phone: <?php echo $admin_info['phone_no']; ?>
          </p>
       </div>
       <div class="col-md-6 text-end">
          <h4>Customer Details</h4>
          <p>
             <strong><?php echo $billing_info['cust_name']; ?></strong><br>
-            Customer ID: <?php echo $billing_info['cust_id']; ?><br>
+            Billing ID: <?php echo $billing_id; ?><br>
             Phone: <?php echo $billing_info['cust_phone']; ?><br>
             Date: <?php echo $billing_info['billing_date']; ?>
          </p>

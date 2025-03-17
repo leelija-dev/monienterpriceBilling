@@ -9,7 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // $password= password_hash($_POST['password'], PASSWORD_BCRYPT);
 
 
-    $sql = "INSERT INTO customers (cust_name, cust_phone, cust_email, cust_password) 
+    $sql = "INSERT INTO admin (admin_name, phone_no, email, admin_password) 
             VALUES ('$name', '$phone', '$email', '$password')";
 
     if ($conn->query($sql) === TRUE) {
