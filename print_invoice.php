@@ -61,14 +61,18 @@ $sgst = $totalGST / 2;
       #printableArea {
          position: absolute;
          left: 0;
+         right: 0;
          top: 0;
-         width: 100%;
+         box-shadow: none;
+         /* margin: 0; */
+         width: auto;
+         page: 'A4';
       }
     }
   </style>
 </head>
 <body>
-<div class="container mt-4" id="printableArea">
+<div class="container mt-5 p-4 shadow" id="printableArea">
    <div class="row mb-3">
       <div class="col-md-6">
          <h4>Company Details</h4>

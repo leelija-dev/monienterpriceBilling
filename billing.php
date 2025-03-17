@@ -60,8 +60,9 @@ $result = $conn->query($sql);
     <div class="container mt-4 px-5">
       <div class="d-flex justify-content-between">
         <div><h2>Billing Records</h2></div>
-        <div><button class="btn btn-success bg-success bg-opacity-75" onclick="window.location.href='add_billing.php'"><i class="fas fa-plus me-2"></i> Bill Generate</button></div>
+        <div><button class="btn btn-success" onclick="window.location.href='add_billing.php'"><i class="fas fa-plus me-2"></i> Bill Generate</button></div>
       </div>
+      <hr>
       <table class="table table-bordered table-striped">
         <thead class="table-dark">
           <tr>

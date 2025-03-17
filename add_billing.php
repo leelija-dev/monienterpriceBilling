@@ -113,10 +113,10 @@ if(isset($_GET['billing_id'])){
       body * {
         visibility: hidden;
       }
-      #invoiceModal, #invoiceModal * {
+      .printInvoice .printInvoice * {
         visibility: visible;
       }
-      #invoiceModal {
+      .printInvoice {
         position: absolute;
         left: 0;
         top: 0;
@@ -144,6 +144,7 @@ if(isset($_GET['billing_id'])){
     
     <div class="container mt-4 px-5">
       <h2>Bill Generate</h2>
+      <hr>
       <form action="submit_billing.php" method="post" id="billingForm">
         <!-- Customer Information -->
         <div class="row bg-secondary bg-opacity-25 p-4 rounded customer-select-container">
@@ -223,7 +224,7 @@ if(isset($_GET['billing_id'])){
         <!-- Close button now redirects to billing.php -->
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="window.location.href='billing.php'"></button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body shadow printInvoice m-3 p-4">
         <div class="row mb-3">
           <!-- Company Details -->
           <div class="col-md-6">
