@@ -45,7 +45,6 @@ if (!isset($_SESSION['customer_id'])) {
       </nav>
       <div class="content">
         <h1>Welcome to My Billing System</h1>
-        <p>This is the home page. You can navigate to Customer, Billing, or Billing Details using the sidebar.</p>
       </div>
     </div>
   </div>
