@@ -203,15 +203,20 @@ if (isset($_GET['billing_id'])) {
                 <!-- <div class="col-md-3">
                 <input type="text" id="newItemName" class="form-control" placeholder="Item Name">
               </div> -->
-                <div class="col-md-3">
+                <!-- <div class="col-md-3">
                   <select id="newItemName" class="form-control">
                     <option value="">Select Item</option>
 
-                    <?php foreach ($items as $item) {  ?>
-                      <option value="<?php echo $item['product_name']; ?>" data-price="<?php echo $item['price']; ?>" 
-                      data-gst="<?php echo $item['gst']; ?>"><?php echo $item['product_name'] ?></option>
-                    <?php  } ?>
+                    < ?php foreach ($items as $item) {  ?>
+                      <option value="< ?php echo $item['product_name']; ?>" data-price="< ?php echo $item['price']; ?>" 
+                      data-gst="< ?php echo $item['gst']; ?>">< ?php echo $item['product_name'] ?></option>
+                    < ?php  } ?>
                   </select>
+                </div> -->
+
+                <div class="col-md-3">
+                  <input type="text" id="newItemName" class="form-control" placeholder="Type product name..." autocomplete="off">
+                  <div id="suggestions" class="list-group position-absolute w-100"></div>
                 </div>
                 <div class="col-md-2">
                   <input type="number" id="newItemQty" class="form-control" placeholder="Quantity">
@@ -348,20 +353,61 @@ if (isset($_GET['billing_id'])) {
   <!-- jQuery and Bootstrap Bundle JS -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-  <script>
-    $(document).ready(function () {
-        $('#newItemName').change(function () {
-            var selectedOption = $(this).find(':selected');
-            console.log(selectedOption.data);
-            var price = selectedOption.data('price');
-            console.log(price);
-            var gst = selectedOption.data('gst');
+  <!-- <script>
+    $(document).ready(function() {
+      $('#newItemName').change(function() {
+        var selectedOption = $(this).find(':selected');
+        console.log(selectedOption.data);
+        var price = selectedOption.data('price');
+        console.log(price);
+        var gst = selectedOption.data('gst');
 
-            $('#newItemPrice').val(price);
-            $('#newItemGST').val(gst);
-        });
+        $('#newItemPrice').val(price);
+        $('#newItemGST').val(gst);
+      });
     });
-</script>
+  </script> -->
+
+  <script>
+    $(document).ready(function() {
+      $("#newItemName").keyup(function() {
+        let query = $(this).val();
+        if (query.length > 1) {
+          $.ajax({
+            url: "search_product.php",
+            method: "POST",
+            data: {
+              query: query
+            },
+            success: function(data) {
+              $("#suggestions").html(data).fadeIn();
+            }
+          });
+        } else {
+          $("#suggestions").fadeOut();
+        }
+      });
+
+      // Select product from the suggestion list
+      $(document).on("click", ".suggestion-item", function() {
+        let productName = $(this).data("name");
+        let price = $(this).data("price");
+        let gst = $(this).data("gst");
+
+        $("#newItemName").val(productName);
+        $("#newItemPrice").val(price);
+        $("#newItemGST").val(gst);
+        $("#suggestions").fadeOut();
+      });
+
+      // Hide suggestions when clicking outside
+      $(document).click(function(e) {
+        if (!$(e.target).closest("#newItemName, #suggestions").length) {
+          $("#suggestions").fadeOut();
+        }
+      });
+    });
+  </script>
   <script>
     $(document).ready(function() {
       var customers = <?php echo json_encode($customers); ?>;
