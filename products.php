@@ -63,7 +63,7 @@ $admin_id = $_SESSION['admin_id'];
                 <?php
                 include 'db.php';
                 // print_r($admin_id);  die;
-                $sql = "SELECT * FROM product WHERE admin_id= $admin_id ORDER BY id";
+                $sql = "SELECT * FROM product ORDER BY id";
                 $result = $conn->query($sql);
 
                 if ($result && $result->num_rows > 0) {
@@ -77,6 +77,7 @@ $admin_id = $_SESSION['admin_id'];
                      <th>Price</th>
                      <th>GST(%)</th>
                     <th>Total Price</th>
+                    <th>Action</th>
                     <!--<th>Address</th>
                     <th>Pincode</th> -->
                   </tr>";
@@ -90,6 +91,15 @@ $admin_id = $_SESSION['admin_id'];
                         echo "<td>" . htmlspecialchars($row['price']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['gst']) . "</td>";
                         echo "<td>" . htmlspecialchars($row['total_price']) . "</td>";
+                        echo "<td>
+            <a href='edit_products.php?id=" . $row['id'] . "' class='btn btn-primary btn-sm'>
+                <i class='fas fa-edit'></i> Edit
+            </a>
+          </td>";
+
+                        //       <a href='delete_product.php?id=" . $row['id'] . "' class='btn btn-danger btn-sm' onclick='return confirm(\"Are you sure you want to delete this item?\")'>
+                        //       <i class='fas fa-trash'></i> Delete
+                        //   </a>
                         // echo "<td>" . htmlspecialchars($row['cust_state']) . "</td>";
                         // echo "<td>" . htmlspecialchars($row['cust_pincode']) . "</td>";
                         echo "</tr>";
