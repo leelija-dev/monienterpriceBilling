@@ -23,5 +23,9 @@
         </ul>
       </div>
     </li>
+
+    <li class="nav-item bg-secondary bg-opacity-25 px-1 rounded">
+      <a class="nav-link fw-bold" href="products.php">Products</a>
+    </li>
   </ul>
 </div>
