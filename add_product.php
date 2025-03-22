@@ -16,7 +16,7 @@ $stmt->execute();
 $admin_info = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
-if(isset($_POST['product_name'])){
+if (isset($_POST['product_name'])) {
   // $product = $_POST['product_name'];
   // $design_no = $_POST['design_no'];
   // $mrp = $_POST['mrp'];
@@ -25,29 +25,30 @@ if(isset($_POST['product_name'])){
   // $product = $_POST['product_name'];
 
   $product = htmlspecialchars($_POST['product_name']);
-    $design_no = htmlspecialchars($_POST['design_no']);
-    $mrp = floatval($_POST['mrp']);
-    $gst = floatval($_POST['gst_percentage']);
-    
-    // Calculate price (GST amount)
-    $gst_amount = ($mrp * $gst) / 100;
-    $total  = $mrp + $gst_amount;
-    
-    // Prepare SQL statement to insert data
-    $stmt = $conn->prepare("INSERT INTO product (product_name, design_no, price, gst, total_price, admin_id) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssdiii", $product, $design_no, $mrp, $gst, $total, $admin_id);
+  $design_no = htmlspecialchars($_POST['design_no']);
+  $mrp = floatval($_POST['mrp']);
+  $gst = floatval($_POST['gst_percentage']);
 
-    // Execute query
-    if ($stmt->execute()) {
-        echo "Product inserted successfully!";
-    } else {
-        echo "Error: " . $stmt->error;
-    }
+  // Calculate price (GST amount)
+  $gst_amount = ($mrp * $gst) / 100;
+  $total  = $mrp + $gst_amount;
 
-    // Close statement and connection
-    $stmt->close();
+  // Prepare SQL statement to insert data
+  $stmt = $conn->prepare("INSERT INTO product (product_name, design_no, price, gst, total_price, admin_id) VALUES (?, ?, ?, ?, ?, ?)");
+  $stmt->bind_param("ssdiii", $product, $design_no, $mrp, $gst, $total, $admin_id);
 
-//  print_r($_POST); die;
+  // Execute query
+  if ($stmt->execute()) {
+    header("Location: products.php"); // Redirect to product list page after success
+    exit();
+  } else {
+    echo "Error: " . $stmt->error;
+  }
+
+  // Close statement and connection
+  $stmt->close();
+
+  //  print_r($_POST); die;
 }
 // If a billing record was just created, fetch its details for the invoice modal.
 // if (isset($_GET['billing_id'])) {
